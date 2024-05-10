@@ -74,26 +74,18 @@ const DataListRow = styled.div`
         }
     }
 `
+
 const Data = () => {
     const [files, setFiles] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const unsubscribe = onSnapshot(collection(db, 'myfiles'), (snapshot) => {
-            try {
-                const filesData = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    data: doc.data()
-                }));
-                setFiles(filesData);
-                setLoading(false);
-            } catch (error) {
-                setError(error);
-                setLoading(false);
-            }
+            setFiles(snapshot.docs.map((doc) => ({
+                id: doc.id,
+                data: doc.data()
+            })));
         });
-
+    
         return () => unsubscribe();
     }, []);
 
@@ -104,16 +96,8 @@ const Data = () => {
         const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-    };
-
-    if (loading) {
-        return <div>Loading...</div>;
     }
-
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
-
+    
     return (
         <DataContainer>
             <DataHeader>
@@ -127,14 +111,18 @@ const Data = () => {
                 </div>
             </DataHeader>
             <div>
-                <DataGrid>
-                    {files.map(file => (
-                        <DataFile key={file.id}>
-                            <InsertDriveFileIcon />
-                            <p>{file.data.filename}</p>
-                        </DataFile>
-                    ))}
-                </DataGrid>
+            <DataGrid>
+    {files.map(file => {
+        console.log('File:', file);
+        console.log('File name:', file.data.filename);
+        return (
+            <DataFile key={file.id}>
+                <InsertDriveFileIcon />
+                <p>{file.data.filename}</p>
+            </DataFile>
+        );
+    })}
+</DataGrid>
                 <div>
                     <DataListRow>
                         <p><b>Name <ArrowDownwardIcon /></b></p>
@@ -143,10 +131,9 @@ const Data = () => {
                         <p><b>File Size</b></p>
                     </DataListRow>
                     {files.map(file => (
-                        
                         <DataListRow key={file.id}>
-                            <a href={file.data.fileURL} target='_blank' rel="noreferrer">
-                               <InsertDriveFileIcon /> <p> {file.data.filename}</p>
+                            <a href={file.data.fileURL} target='_blank'>
+                                <p><InsertDriveFileIcon /> {file.data.filename}</p>
                             </a>
                             <p>Owner </p>
                             <p>{new Date(file.data.timestamp?.seconds*1000).toUTCString()}</p>
@@ -156,7 +143,6 @@ const Data = () => {
                 </div>
             </div>
         </DataContainer>
-    );
-};
-
-export default Data;
+    )
+}
+export default Data

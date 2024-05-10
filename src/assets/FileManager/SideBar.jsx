@@ -108,24 +108,21 @@ const Sidebar = () => {
             // Upload the file to Firebase Storage
             const snapshot = await uploadBytes(storageRef, file);
     
-            // Check if totalBytes is available
-            if (snapshot.totalBytes !== undefined) {
-                // Add file details to Firestore
-                await addDoc(collection(db, 'myfiles'), {
-                    timestamp: serverTimestamp(),
-                    filename: file.name,
-                    fileURL: `files/${file.name}`,
-                    size: snapshot.totalBytes
-                });
+            // Get the file size from the File object
+            const fileSize = file.size;
     
-                // File upload and Firestore update completed successfully
-                setUploading(false);
-                setFile(null);
-                setOpen(false);
-            } else {
-                // Handle case where totalBytes is undefined
-                throw new Error('Snapshot totalBytes is undefined');
-            }
+            // Add file details to Firestore
+            await addDoc(collection(db, 'myfiles'), {
+                timestamp: serverTimestamp(),
+                filename: file.name,
+                fileURL: `files/${file.name}`,
+                size: fileSize // Use the file size obtained from the File object
+            });
+    
+            // File upload and Firestore update completed successfully
+            setUploading(false);
+            setFile(null);
+            setOpen(false);
         } catch (error) {
             // Handle errors
             console.error('Error uploading file:', error);
