@@ -112,10 +112,3 @@ Contributions are welcome! Follow these steps to contribute to the project:
 4. Push to the branch (`git push origin feature`)
 5. Create a pull request
 
-## License
-
-This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Support
-
-For support, please open an issue in the repository or contact [Maintainer Name] <maintainer_email>.
