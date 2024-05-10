@@ -76,7 +76,10 @@ To install and run the application, follow these steps:
 
 ## Usage
 
-[Project Usage Instructions]
+![image](https://github.com/AMANMUHAL/Project/assets/101124129/39eea347-bf9d-4158-bbda-bd917e1db8f7)
+
+![image](https://github.com/AMANMUHAL/Project/assets/101124129/b3ab7b77-3929-4d2b-9998-77b729f3513d)
+
 
 ## Folder Structure
 
